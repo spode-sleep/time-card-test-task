@@ -12,5 +12,8 @@ coverage
 figma-assignment.html
 backend/src/generated
 .release
-qa-step-11
+IMPLEMENTATION_PLAN.md
+SUBMISSION.md
+performance-step-*.json
+qa-step-*
 .github

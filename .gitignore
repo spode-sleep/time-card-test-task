@@ -11,3 +11,9 @@ coverage/
 .release/
 figma-assignment.html
 backend/src/generated/
+
+# Local planning and verification artifacts
+IMPLEMENTATION_PLAN.md
+SUBMISSION.md
+performance-step-*.json
+qa-step-*/
