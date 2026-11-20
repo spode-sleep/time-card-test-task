@@ -1,0 +1,134 @@
+:root {
+  font-family: 'Inter Variable', sans-serif;
+  color: #25262c;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --color-page: #f2f3f8;
+  --color-surface: #fff;
+  --color-field: #f2f3f8;
+  --color-text: #25262c;
+  --color-muted: #8e909d;
+  --color-border: #e8e9f0;
+  --color-primary: #5c73f5;
+  --color-primary-hover: #4660eb;
+  --color-primary-soft: #e9edff;
+  --color-selection: #ecf0ff;
+  --color-danger: #ef575d;
+  --color-danger-soft: #fde8e9;
+  --radius-card: 16px;
+  --radius-control: 8px;
+  --employee-width: 210px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 0;
+  background: var(--color-page);
+}
+button,
+input {
+  font: inherit;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+  color: inherit;
+}
+button:disabled {
+  cursor: default;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #a7b4ff;
+  outline-offset: 3px;
+}
+button svg,
+a svg {
+  flex-shrink: 0;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--color-primary-soft);
+  color: #3e5dff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    background 120ms,
+    border-color 120ms;
+}
+.button:hover:not(:disabled) {
+  background: #dfe5ff;
+}
+.button--primary {
+  background: var(--color-primary);
+  color: white;
+}
+.button--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+.button:disabled {
+  opacity: 0.6;
+}
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: inherit;
+}
+.icon-button:hover:not(:disabled) {
+  background: #e7e9f1;
+}
+.icon-button:disabled {
+  opacity: 0.5;
+}
+.schedule-row {
+  display: grid;
+  grid-template-columns: var(--employee-width) repeat(
+      var(--day-count),
+      minmax(0, 1fr)
+    );
+}
+.sticky-employee {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+@media (max-width: 600px) {
+  :root {
+    --employee-width: 168px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

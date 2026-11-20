@@ -1,0 +1,93 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
+  moduleFormat           = "esm"
+  importFileExtension    = "js"
+  generatedFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Employee {
+  id          String            @id @default(uuid()) @db.Uuid
+  fullName    String            @map("full_name") @db.VarChar(200)
+  position    String            @db.VarChar(100)
+  avatarUrl   String?           @map("avatar_url")
+  sortOrder   Int               @map("sort_order")
+  assignments ShiftAssignment[]
+
+  @@map("employees")
+}
+
+model ShiftTemplate {
+  id           String            @id @default(uuid()) @db.Uuid
+  code         String            @unique @db.VarChar(50)
+  name         String            @db.VarChar(100)
+  startMinute  Int               @map("start_minute") @db.SmallInt
+  endMinute    Int               @map("end_minute") @db.SmallInt
+  endDayOffset Int               @default(0) @map("end_day_offset") @db.SmallInt
+  color        String            @db.VarChar(7)
+  sortOrder    Int               @map("sort_order")
+  assignments  ShiftAssignment[]
+
+  @@map("shift_templates")
+}
+
+model Schedule {
+  id           Int                   @id @default(1)
+  revision     Int                   @default(0)
+  timeZone     String                @default("Europe/Moscow") @map("time_zone") @db.VarChar(64)
+  assignments  ShiftAssignment[]
+  publications SchedulePublication[]
+  requests     ScheduleRequest[]
+
+  @@map("schedules")
+}
+
+model ShiftAssignment {
+  id           String         @id @default(uuid()) @db.Uuid
+  scheduleId   Int            @default(1) @map("schedule_id")
+  employeeId   String         @map("employee_id") @db.Uuid
+  date         DateTime       @db.Date
+  startMinute  Int            @map("start_minute") @db.SmallInt
+  endMinute    Int            @map("end_minute") @db.SmallInt
+  endDayOffset Int            @default(0) @map("end_day_offset") @db.SmallInt
+  templateId   String?        @map("template_id") @db.Uuid
+  color        String         @db.VarChar(7)
+  schedule     Schedule       @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+  employee     Employee       @relation(fields: [employeeId], references: [id], onDelete: Restrict)
+  template     ShiftTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+
+  @@unique([scheduleId, employeeId, date])
+  @@index([scheduleId, date])
+  @@index([templateId])
+  @@index([employeeId])
+  @@map("shift_assignments")
+}
+
+model SchedulePublication {
+  id          String   @id @default(uuid()) @db.Uuid
+  scheduleId  Int      @map("schedule_id")
+  revision    Int
+  snapshot    Json     @db.JsonB
+  publishedAt DateTime @default(now()) @map("published_at") @db.Timestamptz(3)
+  schedule    Schedule @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+
+  @@unique([scheduleId, revision])
+  @@map("schedule_publications")
+}
+
+model ScheduleRequest {
+  requestId   String   @id @map("request_id") @db.Uuid
+  scheduleId  Int      @map("schedule_id")
+  kind        String   @db.VarChar(10)
+  payloadHash String   @map("payload_hash") @db.VarChar(64)
+  response    Json     @db.JsonB
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  schedule    Schedule @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+
+  @@index([scheduleId])
+  @@map("schedule_requests")
+}

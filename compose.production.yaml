@@ -1,0 +1,42 @@
+services:
+  database:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: time_card
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.production}
+      POSTGRES_DB: time_card
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U time_card -d time_card']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  migrate:
+    build:
+      context: .
+      target: build
+    environment:
+      DATABASE_URL: postgresql://time_card:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@database:5432/time_card
+    command: ['sh', '-c', 'npm run db:migrate && npm run db:seed:production']
+    depends_on:
+      database:
+        condition: service_healthy
+
+  app:
+    build:
+      context: .
+      target: production
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://time_card:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@database:5432/time_card
+    ports:
+      - '127.0.0.1:${PORT:-3000}:3000'
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_data:

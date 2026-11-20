@@ -1,0 +1,52 @@
+{
+  "name": "time-card",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "engines": {
+    "node": ">=24.22.3 <25",
+    "npm": ">=11 <12"
+  },
+  "packageManager": "npm@11.19.1",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env backend/dist/server.js",
+    "db:seed:production": "node --env-file-if-exists=.env backend/dist/seed.js",
+    "check:deployment": "node scripts/check-deployment.mjs",
+    "test:production": "npm run build && node --env-file-if-exists=.env scripts/verify-production.mjs",
+    "package:production": "npm run build && node scripts/package-production.mjs",
+    "dev": "npm run db:generate && npm run build --workspace @time-card/shared && concurrently --kill-others --names shared,backend,frontend \"npm run dev --workspace @time-card/shared\" \"npm run dev --workspace @time-card/backend\" \"npm run dev --workspace @time-card/frontend\"",
+    "build": "npm run db:generate && npm run build --workspace @time-card/shared && npm run build --workspace @time-card/backend && npm run build --workspace @time-card/frontend",
+    "typecheck": "npm run db:generate && npm run build --workspace @time-card/shared && npm run typecheck --workspaces --if-present",
+    "lint": "eslint . --max-warnings 0",
+    "check": "npm run typecheck && npm run lint && npm run build",
+    "db:generate": "npm run db:generate --workspace @time-card/backend",
+    "db:validate": "npm run db:validate --workspace @time-card/backend",
+    "db:migrate": "npm run db:migrate --workspace @time-card/backend",
+    "db:migrate:dev": "npm run db:migrate:dev --workspace @time-card/backend --",
+    "db:status": "npm run db:status --workspace @time-card/backend",
+    "db:seed": "npm run db:generate && npm run db:seed --workspace @time-card/backend",
+    "test:integration": "npm run db:generate && npm run build --workspace @time-card/shared && npm run test:integration --workspace @time-card/backend",
+    "test:frontend": "npm run build --workspace @time-card/shared && npm run test --workspace @time-card/frontend",
+    "test:persistence": "npm run db:generate && npm run build --workspace @time-card/shared && node --env-file-if-exists=.env --import=tsx scripts/verify-persistence.mjs",
+    "preview:large": "npm run build --workspace @time-card/shared && npm run build --workspace @time-card/frontend && node scripts/preview-large-schedule.mjs",
+    "preview:qa": "npm run build && node --env-file-if-exists=.env --import=tsx scripts/preview-qa.mjs"
+  },
+  "overrides": {
+    "effect": "3.22.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "concurrently": "10.0.7",
+    "eslint": "10.15.0",
+    "eslint-plugin-vue": "10.12.1",
+    "globals": "17.14.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.73.0"
+  }
+}
