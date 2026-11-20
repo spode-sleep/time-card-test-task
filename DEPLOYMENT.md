@@ -9,7 +9,7 @@ Production-артефакты подготовлены локально. Соз�
 Поддерживаются Node.js 24 и PostgreSQL 17. Проект использует обычный Node.js HTTP-сервер; Docker на публичном тарифе не требуется. Собирать клиент лучше локально и загружать готовый архив, чтобы не тратить память Free на TypeScript/Vite. [Настройка Node.js](https://help.alwaysdata.com/en/docs/web-hosting/languages/nodejs/configuration/), [PostgreSQL](https://help.alwaysdata.com/en/docs/web-hosting/databases/postgresql/).
 
 1. Создать личный аккаунт [alwaysdata Free](https://www.alwaysdata.com/en/offers/), выбрать имя аккаунта и сохранить пароль у себя.
-2. В панели Environment → Node.js выбрать 24. Проверить `node --version` и `npm --version`: нужны Node.js не ниже 24.22.3 в ветке 24 и npm 11.
+2. В панели Environment → Node.js выбрать 24. Проверить `node --version` и `npm --version`: нужны Node.js не ниже 24.22.1 в ветке 24 и npm 11. На аккаунте `time-card-test-task` проверен Node.js 24.22.1.
 3. В Databases → PostgreSQL создать БД и пользователя. Взять фактические host, user и имя БД из панели. Обычно host — `postgresql-ACCOUNT.alwaysdata.net`, порт — 5432; имя БД имеет префикс аккаунта. Пароль в URL должен быть URL-encoded, если содержит специальные символы.
 4. На машине со всеми исходниками установить в игнорируемом `.env` `DATABASE_URL` этой новой удалённой БД. Сохранить локальную конфигурацию отдельно, если она нужна. Выполнить:
 

@@ -33,7 +33,7 @@
 
 ## Быстрый запуск
 
-Нужны Node.js из `.nvmrc` (24.22.3), npm 11 и Docker с Compose. На Windows команды выполняются в PowerShell из корня проекта.
+Для разработки используется Node.js из `.nvmrc` (24.22.3); production поддерживает 24.22.1 и новее в ветке 24. Также нужны npm 11 и Docker с Compose. На Windows команды выполняются в PowerShell из корня проекта.
 
 ```powershell
 Copy-Item .env.example .env
