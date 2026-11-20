@@ -1,0 +1,20 @@
+{
+  "url": "https://time-card-test-task.alwaysdata.net",
+  "checkedAt": "2026-11-20T16:58:20.889Z",
+  "revision": 4,
+  "assignments": 5,
+  "publicationRevision": 4,
+  "databaseTlsMode": "verify-full",
+  "httpRedirect": 301,
+  "restartPersistence": true,
+  "clientBundleMatchesBuild": true,
+  "browserConflictResolution": true,
+  "mobileViewport": {
+    "width": 320,
+    "height": 650
+  },
+  "desktopViewport": {
+    "width": 1280,
+    "height": 800
+  }
+}
